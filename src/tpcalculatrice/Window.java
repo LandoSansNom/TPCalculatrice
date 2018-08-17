@@ -8,14 +8,11 @@ package tpcalculatrice;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 /**
@@ -26,49 +23,25 @@ public class Window extends JFrame {
     
         public Window(){
             this.setTitle("Calculette");
-            this.setSize(300, 300);
+            this.setSize(240, 260);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.setLocationRelativeTo(null);
-            // We define the layout
-            this.setLayout(new BorderLayout());
-            JPanel container = new JPanel();
-            GridLayout gl = new GridLayout(5,4);
-            gl.setHgap(8);
-            gl.setVgap(8);
-            container.setLayout(gl);
+            this.setResizable(false);
             
-            JPanel p = new JPanel();
-            p.setLayout(gl);
-            p.setPreferredSize(new Dimension(40,40));
+            JPanel container = new JPanel();
+            JPanel panEcran = new JPanel();
             
             // Create JLabel with border for display screen
-            JLabel label = new JLabel();
-            Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
-            
+            JLabel label = new JLabel("0");
+            Border border = BorderFactory.createLineBorder(Color.BLACK);
+            label.setPreferredSize(new Dimension(220,30));
             label.setBorder(border);
-            
-            p.add(label);
-            
-            container.add(new JButton("1"));
-            container.add(new JButton("2"));
-            container.add(new JButton("3"));
-            container.add(new JButton("C"));
-            container.add(new JButton("4"));
-            container.add(new JButton("5"));
-            container.add(new JButton("6"));
-            container.add(new JButton("+"));
-            container.add(new JButton("7"));
-            container.add(new JButton("8"));
-            container.add(new JButton("9"));
-            container.add(new JButton("-"));
-            container.add(new JButton("0"));
-            container.add(new JButton("."));
-            container.add(new JButton("="));
-            container.add(new JButton("*"));
-            container.add(new JButton("/"));
-            
-            this.getContentPane().add(p, BorderLayout.NORTH);
-            this.getContentPane().add(container);
+            label.setHorizontalAlignment(JLabel.RIGHT);
+            panEcran.setPreferredSize(new Dimension(220,30));
+            panEcran.add(label);
+               
+            container.add(panEcran, BorderLayout.NORTH);
+            this.setContentPane(container);
             this.setVisible(true);
         }
 }
