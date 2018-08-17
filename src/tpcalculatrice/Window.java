@@ -10,12 +10,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 /**
@@ -26,49 +24,66 @@ public class Window extends JFrame {
     
         public Window(){
             this.setTitle("Calculette");
-            this.setSize(300, 300);
+            this.setSize(240, 280);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.setLocationRelativeTo(null);
-            // We define the layout
-            this.setLayout(new BorderLayout());
+            this.setResizable(false);
+            
             JPanel container = new JPanel();
-            GridLayout gl = new GridLayout(5,4);
-            gl.setHgap(8);
-            gl.setVgap(8);
-            container.setLayout(gl);
-            
-            JPanel p = new JPanel();
-            p.setLayout(gl);
-            p.setPreferredSize(new Dimension(40,40));
-            
+            JPanel panEcran = new JPanel();
+            JPanel panBtnCenter = new JPanel();
+            JPanel panBtnLeft = new JPanel();
+            Border border = BorderFactory.createLineBorder(Color.black);
+            String[] libelle_btn = {"1","2","3","4","5","6","7","8","9","0",".","=","C","+","-","*","/"};
+            JButton[] buttons = new JButton[libelle_btn.length];
+            Dimension dimension1 = new Dimension(50,40);
+            Dimension dimension2 = new Dimension(50,31);
             // Create JLabel with border for display screen
-            JLabel label = new JLabel();
-            Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
-            
+            JLabel label = new JLabel("0");
+            label.setPreferredSize(new Dimension(220,35));
             label.setBorder(border);
+            label.setHorizontalAlignment(JLabel.RIGHT);
+            panEcran.setPreferredSize(new Dimension(220,40));
+            panEcran.add(label);
             
-            p.add(label);
+            panBtnCenter.setPreferredSize(new Dimension(165,225));
+            panBtnLeft.setPreferredSize(new Dimension(55,225));
             
-            container.add(new JButton("1"));
-            container.add(new JButton("2"));
-            container.add(new JButton("3"));
-            container.add(new JButton("C"));
-            container.add(new JButton("4"));
-            container.add(new JButton("5"));
-            container.add(new JButton("6"));
-            container.add(new JButton("+"));
-            container.add(new JButton("7"));
-            container.add(new JButton("8"));
-            container.add(new JButton("9"));
-            container.add(new JButton("-"));
-            container.add(new JButton("0"));
-            container.add(new JButton("."));
-            container.add(new JButton("="));
-            container.add(new JButton("*"));
-            container.add(new JButton("/"));
+            for(int i=0; i<libelle_btn.length; i++){
+                buttons[i] = new JButton(libelle_btn[i]);
+                buttons[i].setPreferredSize(dimension1);
+                
+                switch(i){
+                    case 12:
+                        buttons[i].setForeground(Color.red);
+                        panBtnLeft.add(buttons[i]);
+                        break;
+                    case 13:
+                        buttons[i].setPreferredSize(dimension2);
+                        panBtnLeft.add(buttons[i]);
+                        break;
+                    case 14:
+                        buttons[i].setPreferredSize(dimension2);
+                        panBtnLeft.add(buttons[i]);
+                        break;
+                    case 15:
+                        buttons[i].setPreferredSize(dimension2);
+                        panBtnLeft.add(buttons[i]);
+                        break;
+                    case 16:
+                        buttons[i].setPreferredSize(dimension2);
+                        panBtnLeft.add(buttons[i]);
+                        break;
+                    default:
+                        panBtnCenter.add(buttons[i]);
+                        break;
+                }
+            }
             
-            this.getContentPane().add(p, BorderLayout.NORTH);
-            this.getContentPane().add(container);
+            container.add(panEcran, BorderLayout.NORTH);
+            container.add(panBtnCenter, BorderLayout.CENTER);
+            container.add(panBtnLeft, BorderLayout.EAST);
+            this.setContentPane(container);
             this.setVisible(true);
         }
 }
