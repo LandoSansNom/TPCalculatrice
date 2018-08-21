@@ -8,7 +8,8 @@ package tpcalculatrice;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,7 +22,11 @@ import javax.swing.border.Border;
  * @author LandoSansNom
  */
 public class Window extends JFrame {
-    
+       
+        JLabel label = new JLabel("0");
+        Double chiffre1;
+        String operateur = "";
+        Boolean ClicOperateur = false, update = false;
         public Window(){
             this.setTitle("Calculette");
             this.setSize(240, 280);
@@ -38,8 +43,8 @@ public class Window extends JFrame {
             JButton[] buttons = new JButton[libelle_btn.length];
             Dimension dimension1 = new Dimension(50,40);
             Dimension dimension2 = new Dimension(50,31);
+           
             // Create JLabel with border for display screen
-            JLabel label = new JLabel("0");
             label.setPreferredSize(new Dimension(220,35));
             label.setBorder(border);
             label.setHorizontalAlignment(JLabel.RIGHT);
@@ -54,28 +59,38 @@ public class Window extends JFrame {
                 buttons[i].setPreferredSize(dimension1);
                 
                 switch(i){
+                    case 11:
+                        panBtnCenter.add(buttons[i]);
+                        buttons[i].addActionListener(new EgalListener());
+                        break;
                     case 12:
                         buttons[i].setForeground(Color.red);
                         panBtnLeft.add(buttons[i]);
+                        buttons[i].addActionListener(new ResetListener());
                         break;
                     case 13:
                         buttons[i].setPreferredSize(dimension2);
                         panBtnLeft.add(buttons[i]);
+                        buttons[i].addActionListener(new PlusListener());
                         break;
                     case 14:
                         buttons[i].setPreferredSize(dimension2);
                         panBtnLeft.add(buttons[i]);
+                        buttons[i].addActionListener(new MoinsListener());
                         break;
                     case 15:
                         buttons[i].setPreferredSize(dimension2);
                         panBtnLeft.add(buttons[i]);
+                        buttons[i].addActionListener(new MultiplyListener());
                         break;
                     case 16:
                         buttons[i].setPreferredSize(dimension2);
                         panBtnLeft.add(buttons[i]);
+                        buttons[i].addActionListener(new DivisionListener());
                         break;
                     default:
                         panBtnCenter.add(buttons[i]);
+                        buttons[i].addActionListener(new ChiffreListener());
                         break;
                 }
             }
@@ -85,5 +100,142 @@ public class Window extends JFrame {
             container.add(panBtnLeft, BorderLayout.EAST);
             this.setContentPane(container);
             this.setVisible(true);
+        }
+
+    class EgalListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Calcul();
+            update = true;
+            ClicOperateur = false;
+        }
+
+        
+    }
+
+    class DivisionListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(ClicOperateur){
+                Calcul();
+            }
+            else{
+                chiffre1 = Double.valueOf(label.getText()).doubleValue();
+                ClicOperateur = true;
+            }
+            
+            operateur = "/";
+            update = true;
+        }
+
+        
+    }
+
+    class MultiplyListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(ClicOperateur){
+                Calcul();
+            }
+            else{
+                chiffre1 = Double.valueOf(label.getText()).doubleValue();
+                ClicOperateur = true;
+            }
+            
+            operateur = "*";
+            update = true;
+        }
+       
+    }
+
+    class MoinsListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(ClicOperateur){
+                Calcul();
+            }
+            else{
+                chiffre1 = Double.valueOf(label.getText()).doubleValue();
+                ClicOperateur = true;
+            }
+            
+            operateur = "-";
+            update = true;
+        }
+        
+    }
+
+    class PlusListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(ClicOperateur){
+                Calcul();
+            }else{
+            chiffre1 = Double.valueOf(label.getText()).doubleValue();
+            ClicOperateur = true;
+            }
+            operateur = "+";
+            update = true;
+        }
+
+        
+    }
+
+    class ResetListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ClicOperateur = false;
+            update = true;
+            chiffre1 = 0d;
+            operateur = "";
+            label.setText("");
+        }
+    }
+        
+        class ChiffreListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String str = ((JButton)e.getSource()).getText();
+            if(update)
+                update = false;
+            else{
+                if(!label.getText().equals("0"))
+                        str = label.getText() + str;
+            }
+            label.setText(str);
+        }
+            
+            
+        }
+        
+        // A method to calculate
+        public void Calcul(){
+            if(operateur.equals("+")){
+                chiffre1 = chiffre1 + Double.valueOf(label.getText()).doubleValue();
+                label.setText(String.valueOf(chiffre1));
+            }
+            if(operateur.equals("*")){
+                chiffre1 = chiffre1 * Double.valueOf(label.getText()).doubleValue();
+                label.setText(String.valueOf(chiffre1));
+            }
+            if(operateur.equals("-")){
+                chiffre1 = chiffre1 - Double.valueOf(label.getText()).doubleValue();
+                label.setText(String.valueOf(chiffre1));
+            }
+            if(operateur.equals("/")){
+                try{
+                chiffre1 = chiffre1 / Double.valueOf(label.getText()).doubleValue();
+                label.setText(String.valueOf(chiffre1));
+                }catch(ArithmeticException e){
+                    label.setText("0");
+                }
+            }
         }
 }
