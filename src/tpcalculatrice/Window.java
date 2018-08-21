@@ -26,7 +26,7 @@ public class Window extends JFrame {
         JLabel label = new JLabel("0");
         Double chiffre1;
         String operateur = "";
-        Boolean ClicOperateur = false;
+        Boolean ClicOperateur = false, update = false;
         public Window(){
             this.setTitle("Calculette");
             this.setSize(240, 280);
@@ -61,6 +61,7 @@ public class Window extends JFrame {
                 switch(i){
                     case 11:
                         panBtnCenter.add(buttons[i]);
+                        buttons[i].addActionListener(new EgalListener());
                         break;
                     case 12:
                         buttons[i].setForeground(Color.red);
@@ -101,6 +102,18 @@ public class Window extends JFrame {
             this.setVisible(true);
         }
 
+    class EgalListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Calcul();
+            update = true;
+            ClicOperateur = false;
+        }
+
+        
+    }
+
     class DivisionListener implements ActionListener {
 
         @Override
@@ -114,6 +127,7 @@ public class Window extends JFrame {
             }
             
             operateur = "/";
+            update = true;
         }
 
         
@@ -132,6 +146,7 @@ public class Window extends JFrame {
             }
             
             operateur = "*";
+            update = true;
         }
        
     }
@@ -149,6 +164,7 @@ public class Window extends JFrame {
             }
             
             operateur = "-";
+            update = true;
         }
         
     }
@@ -164,6 +180,7 @@ public class Window extends JFrame {
             ClicOperateur = true;
             }
             operateur = "+";
+            update = true;
         }
 
         
@@ -173,7 +190,11 @@ public class Window extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            label.setText("0");
+            ClicOperateur = false;
+            update = true;
+            chiffre1 = 0d;
+            operateur = "";
+            label.setText("");
         }
     }
         
@@ -182,6 +203,12 @@ public class Window extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             String str = ((JButton)e.getSource()).getText();
+            if(update)
+                update = false;
+            else{
+                if(!label.getText().equals("0"))
+                        str = label.getText() + str;
+            }
             label.setText(str);
         }
             
